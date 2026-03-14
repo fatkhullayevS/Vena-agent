@@ -48,6 +48,8 @@
   .bubble strong{font-weight:600}
   .bubble em{font-style:italic}
   .msg.ai .bubble em{color:#777}
+  .tw-cursor{display:inline-block;animation:twblink .6s infinite;font-weight:300;color:#999}
+  @keyframes twblink{0%,100%{opacity:1}50%{opacity:0}}
 
   .typing{display:flex;gap:5px;align-items:center;padding:3px 0}
   .td{width:7px;height:7px;border-radius:50%;background:#ddd;animation:bounce 1.3s infinite}
@@ -241,10 +243,10 @@
       </div>
     </div>
     <div class="sugs">
-      <button class="sug" onclick="askSug(this)">Produktivlikni qanday oshirish mumkin?</button>
-      <button class="sug" onclick="askSug(this)">Fokuslanish usullari</button>
-      <button class="sug" onclick="askSug(this)">Energiya boshqaruvi</button>
-      <button class="sug" onclick="askSug(this)">Odatlar qanday shakllanadi?</button>
+      <button class="sug" onclick="askSug(this)">ROAS ni qanday oshirish mumkin?</button>
+      <button class="sug" onclick="askSug(this)">Meta Ads audience sozlash</button>
+      <button class="sug" onclick="askSug(this)">Grand slam offer yaratish</button>
+      <button class="sug" onclick="askSug(this)">CAC ni kamaytirish yo'llari</button>
     </div>
     <div class="input-area">
       <input class="chat-input" id="chat-input" placeholder="Savol bering..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"/>
@@ -566,27 +568,28 @@ function buildSystemPrompt() {
 
 Foydalanuvchi o'qitgan manbalar: ${sources}
 
-MUTAXASSISLIK SOHALARING:
-- Performance marketing (Meta Ads, Google Ads, TikTok Ads)
-- Offer yaratish va narx belgilash strategiyasi
-- Lead generation va funnel qurilishi
-- Konversiya optimallashtirish (CRO)
-- Biznes o'sishi va scaling
-- Sotish psixologiyasi va copywriting
-- ROI, ROAS, CAC, LTV kabi metrikalar tahlili
+QATTIQ QOIDALAR:
+1. FAQAT yuqoridagi BILIMLAR BAZASIDAN foydalanib javob ber
+2. Internet yoki o'z ichingdagi umumiy bilimlardan FOYDALANMA
+3. Agar savol bazada yo'q: "Bu mavzu haqida bazamda ma'lumot yo'q" de
+4. Agar savol performance marketingdan tashqari: "Men faqat performance marketing va biznes o'sishi bo'yicha yordam bera olaman" de
 
-JAVOB QOIDALARI:
-1. FAQAT performance marketing va biznes o'sishi mavzularida javob ber
-2. Agar savol bu mavzulardan tashqari bo'lsa — "Men faqat performance marketing va biznes o'sishi bo'yicha yordam bera olaman" de
-3. Bilimlar bazasidagi g'oyalarni O'Z SO'ZLARING bilan yoz — kitobdagi quruq jumlalarni ko'chirma
-4. Javobni TO'LIQ yoz — o'rtada to'xtatma, har bir fikrni oxirigacha tushuntir
-5. Strukturali yoz: kirish → asosiy fikrlar → amaliy qadamlar → xulosa
-6. **Qalin** va *kursiv* ishlatib muhim joylarni ajrat
-7. Konkret raqamlar, real misollar va amaliy qadamlar ber
-8. O'zbek tilida, professional lekin iliq ohangda yoz
+JAVOB FORMATI (har doim shu tartibda):
+
+**Bazadan:**
+Bilimlar bazasidagi ma'lumotlar asosida strukturali javob yoz — kirish, asosiy fikrlar (raqamlangan), amaliy qadamlar, xulosa.
+
+---
+*Vena fikri:* Bazadagi ma'lumotlarga qo'shimcha ravishda, shaxsan men shuni ham qo'shgan bo'lardim: [o'z qisqa fikring — 2-3 jumla]
+
+USLUB:
+- O'z so'zlaring bilan yoz, kitobdagi quruq jumlalarni ko'chirma
+- **Qalin** va *kursiv* ishlatib ajrat
+- Konkret raqamlar va misollar ber
+- O'zbek tilida, professional lekin iliq ohangda
 
 BILIMLAR BAZASI:
-${ctx}`;
+\${ctx}\`;
 }
 
 async function callGroq(apiKey, systemPrompt) {
@@ -882,8 +885,28 @@ function renderBubble(text) {
 }
 function updateMsg(id, text) {
   const el = document.getElementById(id);
-  if (el) el.querySelector('.bubble').innerHTML = renderBubble(text);
-  document.getElementById('messages').scrollTop = 99999;
+  if (!el) return;
+  typewriter(el.querySelector('.bubble'), text);
+}
+
+function typewriter(el, text) {
+  el.innerHTML = '';
+  let i = 0;
+  const len = text.length;
+  const speed = len > 1000 ? 3 : len > 500 ? 6 : 10;
+  function tick() {
+    if (i < len) {
+      const chunk = Math.max(1, Math.floor(speed / 4));
+      i = Math.min(i + chunk, len);
+      el.innerHTML = renderBubble(text.slice(0, i)) + '<span class="tw-cursor">|</span>';
+      document.getElementById('messages').scrollTop = 99999;
+      setTimeout(tick, speed);
+    } else {
+      el.innerHTML = renderBubble(text);
+      document.getElementById('messages').scrollTop = 99999;
+    }
+  }
+  tick();
 }
 function askSug(btn) {
   document.getElementById('chat-input').value = btn.textContent;
