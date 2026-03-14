@@ -9,7 +9,6 @@
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f7f6f2;color:#1a1a1a;min-height:100vh}
   .app{display:flex;flex-direction:column;height:100vh;max-width:920px;margin:0 auto;background:#fff;box-shadow:0 0 60px rgba(0,0,0,.06)}
 
-  /* HEADER */
   .header{padding:1rem 1.5rem;border-bottom:1px solid #eeece8;display:flex;align-items:center;gap:13px;background:#fff}
   .logo{width:40px;height:40px;border-radius:12px;background:#1a1a1a;display:flex;align-items:center;justify-content:center;flex-shrink:0}
   .header-text h1{font-size:17px;font-weight:700;color:#111;letter-spacing:-.3px}
@@ -18,18 +17,19 @@
   .hbadge{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500}
   .hbadge.green{background:#f0faf4;border:1px solid #c0e8cc;color:#1a8a38}
   .hbadge.gray{background:#f5f4f0;border:1px solid #e0ded8;color:#999}
+  .provider-pill{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600;cursor:pointer;border:none;transition:all .15s}
+  .provider-pill.groq{background:#f0f4ff;border:1px solid #c0ccf0;color:#3a52cc}
+  .provider-pill.gemini{background:#f0faf4;border:1px solid #b0e0c8;color:#1a7a50}
+  .provider-pill.claude{background:#fdf5ee;border:1px solid #f0d0b0;color:#c06020}
 
-  /* TABS */
   .tabs{display:flex;border-bottom:1px solid #eeece8;background:#fff}
   .tab{flex:1;padding:11px;font-size:13px;font-family:inherit;border:none;background:transparent;color:#aaa;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s}
   .tab:hover{color:#555}
   .tab.active{color:#1a1a1a;border-bottom-color:#1a1a1a;font-weight:600}
 
-  /* PANELS */
   .panel{display:none;flex:1;flex-direction:column;overflow:hidden}
   .panel.active{display:flex}
 
-  /* CHAT */
   .messages{flex:1;overflow-y:auto;padding:1.5rem;display:flex;flex-direction:column;gap:16px;background:#faf9f6}
   .messages::-webkit-scrollbar{width:4px}
   .messages::-webkit-scrollbar-thumb{background:#e0ded8;border-radius:2px}
@@ -61,7 +61,7 @@
 
   .sugs{display:flex;flex-wrap:wrap;gap:7px;padding:.8rem 1.5rem;border-top:1px solid #f0eee8;background:#fff}
   .sug{padding:6px 14px;background:#f7f6f2;border:1px solid #e8e6e0;border-radius:20px;font-size:12px;color:#666;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
-  .sug:hover{border-color:#1a1a1a;color:#1a1a1a;background:#f0eee8}
+  .sug:hover{border-color:#1a1a1a;color:#1a1a1a}
 
   .input-area{padding:1rem 1.5rem;border-top:1px solid #eeece8;display:flex;gap:8px;background:#fff}
   .chat-input{flex:1;padding:11px 16px;background:#f7f6f2;border:1px solid #e8e6e0;border-radius:12px;font-size:14px;font-family:inherit;color:#1a1a1a;outline:none;transition:border-color .15s}
@@ -71,22 +71,66 @@
   .send-btn:hover{background:#333}
   .send-btn:disabled{opacity:.3;cursor:not-allowed}
 
+  /* SETTINGS */
+  .spanel{flex:1;overflow-y:auto;padding:1.5rem;display:flex;flex-direction:column;gap:20px;background:#faf9f6}
+  .spanel::-webkit-scrollbar{width:4px}
+  .spanel::-webkit-scrollbar-thumb{background:#e0ded8;border-radius:2px}
+
+  .sec-title{font-size:11px;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px}
+  .card{background:#fff;border:1px solid #eeece8;border-radius:14px;padding:18px}
+  .card+.card{margin-top:0}
+
+  /* Provider selector */
+  .provider-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:4px}
+  .pcard{border:2px solid #eeece8;border-radius:12px;padding:14px 12px;cursor:pointer;transition:all .15s;text-align:center;background:#fff}
+  .pcard:hover{border-color:#ccc}
+  .pcard.active.groq{border-color:#3a52cc;background:#f5f7ff}
+  .pcard.active.gemini{border-color:#1a7a50;background:#f0faf5}
+  .pcard.active.claude{border-color:#c06020;background:#fdf7f0}
+  .pcard-icon{font-size:22px;margin-bottom:6px}
+  .pcard-name{font-size:13px;font-weight:600;color:#1a1a1a}
+  .pcard-tag{font-size:10px;color:#aaa;margin-top:2px}
+  .pcard.active.groq .pcard-name{color:#3a52cc}
+  .pcard.active.gemini .pcard-name{color:#1a7a50}
+  .pcard.active.claude .pcard-name{color:#c06020}
+
+  .api-block{margin-top:14px;padding-top:14px;border-top:1px solid #f0eee8}
+  .api-label{font-size:12px;font-weight:600;color:#888;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
+  .api-status{font-size:11px;font-weight:500}
+  .api-status.ok{color:#1a8a38}
+  .api-status.no{color:#bbb}
+  .api-input{width:100%;padding:10px 14px;background:#f7f6f2;border:1px solid #e8e6e0;border-radius:10px;font-size:13px;font-family:inherit;color:#1a1a1a;outline:none;transition:border-color .15s;margin-bottom:6px}
+  .api-input:focus{border-color:#1a1a1a;background:#fff}
+  .api-input::placeholder{color:#bbb}
+  .api-note{font-size:12px;color:#bbb;line-height:1.65}
+  .api-note a{color:#1a1a1a;font-weight:500;text-decoration:none}
+  .api-note a:hover{text-decoration:underline}
+
+  /* free guide */
+  .free-guide{background:#fffdf5;border:1px solid #f0e8b0;border-radius:12px;padding:16px}
+  .free-guide h3{font-size:13px;font-weight:700;color:#8a6a00;margin-bottom:12px}
+  .provider-guide{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #f0e8b0}
+  .provider-guide:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+  .pg-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .pg-icon{font-size:16px}
+  .pg-name{font-size:13px;font-weight:600;color:#1a1a1a}
+  .pg-limit{font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500}
+  .pg-limit.great{background:#e8f5e8;color:#1a7a30}
+  .pg-limit.good{background:#e8eeff;color:#3a52cc}
+  .pg-limit.pay{background:#fff0e8;color:#c05010}
+  .pg-steps{list-style:none;display:flex;flex-direction:column;gap:5px}
+  .pg-steps li{font-size:12px;color:#666;display:flex;align-items:flex-start;gap:7px;line-height:1.55}
+  .pg-steps li::before{content:counter(step);counter-increment:step;width:18px;height:18px;border-radius:50%;background:#f0e8b0;color:#8a6a00;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+  .pg-steps{counter-reset:step}
+  .pg-steps a{color:#1a1a1a;font-weight:500}
+
   /* KNOWLEDGE */
   .kpanel{flex:1;overflow-y:auto;padding:1.5rem;display:flex;flex-direction:column;gap:18px;background:#faf9f6}
   .kpanel::-webkit-scrollbar{width:4px}
   .kpanel::-webkit-scrollbar-thumb{background:#e0ded8;border-radius:2px}
 
-  .sec-title{font-size:11px;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px}
-  .card{background:#fff;border:1px solid #eeece8;border-radius:14px;padding:16px}
-
-  .api-input{width:100%;padding:10px 14px;background:#f7f6f2;border:1px solid #e8e6e0;border-radius:10px;font-size:13px;font-family:inherit;color:#1a1a1a;outline:none;transition:border-color .15s}
-  .api-input:focus{border-color:#1a1a1a;background:#fff}
-  .api-input::placeholder{color:#bbb}
-  .api-note{font-size:12px;color:#bbb;margin-top:8px;line-height:1.6}
-  .api-note a{color:#1a1a1a;font-weight:500}
-
   .source-types{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
-  .src-btn{padding:7px 14px;background:#f7f6f2;border:1px solid #e8e6e0;border-radius:8px;font-size:12px;font-family:inherit;color:#888;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:5px}
+  .src-btn{padding:7px 14px;background:#f7f6f2;border:1px solid #e8e6e0;border-radius:8px;font-size:12px;font-family:inherit;color:#888;cursor:pointer;transition:all .15s}
   .src-btn:hover{border-color:#1a1a1a;color:#1a1a1a}
   .src-btn.active{background:#1a1a1a;border-color:#1a1a1a;color:#fff}
 
@@ -130,8 +174,6 @@
 
   /* HISTORY */
   .hpanel{flex:1;overflow-y:auto;padding:1.5rem;display:flex;flex-direction:column;gap:10px;background:#faf9f6}
-  .hpanel::-webkit-scrollbar{width:4px}
-  .hpanel::-webkit-scrollbar-thumb{background:#e0ded8;border-radius:2px}
   .h-top{display:flex;gap:8px}
   .new-chat-btn{flex:1;padding:10px;background:#1a1a1a;border:none;border-radius:10px;color:#fff;font-size:13px;font-family:inherit;font-weight:500;cursor:pointer}
   .new-chat-btn:hover{background:#333}
@@ -139,9 +181,14 @@
   .clear-hist-btn:hover{border-color:#ef4444;color:#ef4444}
   .h-item{background:#fff;border:1px solid #eeece8;border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .15s;position:relative}
   .h-item:hover{border-color:#1a1a1a}
-  .h-q{font-size:13px;font-weight:500;color:#1a1a1a;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:24px}
+  .h-q{font-size:13px;font-weight:500;color:#1a1a1a;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:28px}
   .h-a{font-size:12px;color:#aaa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .h-date{font-size:11px;color:#ccc;margin-top:6px}
+  .h-meta{display:flex;align-items:center;gap:8px;margin-top:6px}
+  .h-date{font-size:11px;color:#ccc}
+  .h-provider{font-size:10px;padding:1px 7px;border-radius:10px;font-weight:500}
+  .h-provider.groq{background:#f0f3ff;color:#3a52cc}
+  .h-provider.gemini{background:#f0faf4;color:#1a7a50}
+  .h-provider.claude{background:#fdf5ee;color:#c06020}
   .h-del{position:absolute;top:12px;right:12px;background:none;border:none;color:#ddd;cursor:pointer;font-size:17px;line-height:1;transition:color .1s;padding:0}
   .h-del:hover{color:#ef4444}
   .no-h{text-align:center;padding:2rem;color:#ccc;font-size:13px}
@@ -167,7 +214,7 @@
     </div>
     <div class="header-right">
       <span class="hbadge gray" id="kb-badge">0 manba</span>
-      <span class="hbadge green">● Groq</span>
+      <span class="provider-pill" id="provider-pill" onclick="switchTab('settings')">⚙ Provider</span>
     </div>
   </div>
 
@@ -175,6 +222,7 @@
     <button class="tab active" onclick="switchTab('chat')">💬 Chat</button>
     <button class="tab" onclick="switchTab('knowledge')">📚 Bilimlar</button>
     <button class="tab" onclick="switchTab('history')">🕓 Tarix</button>
+    <button class="tab" onclick="switchTab('settings')">⚙ Sozlamalar</button>
   </div>
 
   <!-- ══ CHAT ══ -->
@@ -207,18 +255,6 @@
   <!-- ══ KNOWLEDGE ══ -->
   <div id="tab-knowledge" class="panel">
     <div class="kpanel">
-
-      <div>
-        <div class="sec-title">Groq API Kaliti</div>
-        <div class="card">
-          <input class="api-input" id="api-key" type="password" placeholder="gsk_..." oninput="autoSaveApi()"/>
-          <div class="api-note">
-            Bepul olish: <a href="https://console.groq.com" target="_blank">console.groq.com</a> → API Keys.<br>
-            Kalit faqat brauzeringizda saqlanadi.
-          </div>
-        </div>
-      </div>
-
       <div>
         <div class="sec-title">Manba qo'shish</div>
         <div class="card">
@@ -233,7 +269,7 @@
             <input class="add-input" id="src-title" placeholder="Manba nomi (masalan: Atomic Habits — James Clear)"/>
           </div>
           <textarea class="k-textarea" id="k-input"
-            placeholder="Matn, transkripsiya yoki muhim fikrlarni bu yerga paste qiling..."
+            placeholder="Matn, transkripsiya yoki muhim fikrlarni paste qiling..."
             oninput="updateCount()"></textarea>
           <div class="k-footer">
             <span class="char-count" id="char-count">0 belgi</span>
@@ -241,7 +277,6 @@
           </div>
         </div>
       </div>
-
       <div>
         <div class="sec-title">Fayl yuklash (PDF · TXT · MD)</div>
         <div class="card">
@@ -255,17 +290,13 @@
           <div class="upload-status" id="upload-status"></div>
         </div>
       </div>
-
       <div>
         <div class="k-list-header">
           <div class="sec-title" style="margin-bottom:0">Manbalar (<span id="k-count">0</span> ta bo'lak)</div>
           <button class="clear-btn" onclick="clearAllKnowledge()">🗑 Hammasini o'chirish</button>
         </div>
-        <div class="k-list" id="k-list">
-          <div class="no-k">Hali hech narsa qo'shilmagan</div>
-        </div>
+        <div class="k-list" id="k-list"><div class="no-k">Hali hech narsa qo'shilmagan</div></div>
       </div>
-
     </div>
   </div>
 
@@ -274,9 +305,125 @@
     <div class="hpanel">
       <div class="h-top">
         <button class="new-chat-btn" onclick="newChat()">+ Yangi suhbat</button>
-        <button class="clear-hist-btn" onclick="clearAllHistory()" title="Barcha tarixni o'chirish">🗑 Tarixni tozalash</button>
+        <button class="clear-hist-btn" onclick="clearAllHistory()">🗑 Tarixni tozalash</button>
       </div>
       <div id="h-list"><div class="no-h">Hali suhbat tarixi yo'q</div></div>
+    </div>
+  </div>
+
+  <!-- ══ SETTINGS ══ -->
+  <div id="tab-settings" class="panel">
+    <div class="spanel">
+
+      <div>
+        <div class="sec-title">AI Provider tanlash</div>
+        <div class="card">
+          <div class="provider-grid">
+            <div class="pcard groq active" id="pcard-groq" onclick="selectProvider('groq')">
+              <div class="pcard-icon">⚡</div>
+              <div class="pcard-name">Groq</div>
+              <div class="pcard-tag">Tez · Bepul</div>
+            </div>
+            <div class="pcard gemini" id="pcard-gemini" onclick="selectProvider('gemini')">
+              <div class="pcard-icon">✦</div>
+              <div class="pcard-name">Gemini</div>
+              <div class="pcard-tag">1500/kun bepul</div>
+            </div>
+            <div class="pcard claude" id="pcard-claude" onclick="selectProvider('claude')">
+              <div class="pcard-icon">◆</div>
+              <div class="pcard-name">Claude</div>
+              <div class="pcard-tag">To'lanadi</div>
+            </div>
+          </div>
+
+          <!-- GROQ key -->
+          <div class="api-block" id="key-groq">
+            <div class="api-label">
+              Groq API kaliti
+              <span class="api-status" id="status-groq">● Kiritilmagan</span>
+            </div>
+            <input class="api-input" id="key-groq-input" type="password" placeholder="gsk_..." oninput="saveKey('groq',this.value)"/>
+            <div class="api-note">
+              <a href="https://console.groq.com" target="_blank">console.groq.com</a> → API Keys → Create API Key
+            </div>
+          </div>
+
+          <!-- GEMINI key -->
+          <div class="api-block" id="key-gemini" style="display:none">
+            <div class="api-label">
+              Gemini API kaliti
+              <span class="api-status" id="status-gemini">● Kiritilmagan</span>
+            </div>
+            <input class="api-input" id="key-gemini-input" type="password" placeholder="AIza..." oninput="saveKey('gemini',this.value)"/>
+            <div class="api-note">
+              <a href="https://aistudio.google.com" target="_blank">aistudio.google.com</a> → Get API key → Create API key
+            </div>
+          </div>
+
+          <!-- CLAUDE key -->
+          <div class="api-block" id="key-claude" style="display:none">
+            <div class="api-label">
+              Claude API kaliti
+              <span class="api-status" id="status-claude">● Kiritilmagan</span>
+            </div>
+            <input class="api-input" id="key-claude-input" type="password" placeholder="sk-ant-..." oninput="saveKey('claude',this.value)"/>
+            <div class="api-note">
+              <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> → API Keys → Create Key
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FREE GUIDE -->
+      <div>
+        <div class="sec-title">Bepul foydalanish yo'llari</div>
+        <div class="free-guide">
+          <h3>💡 Har bir provider qancha bepul beradi?</h3>
+
+          <div class="provider-guide">
+            <div class="pg-header">
+              <span class="pg-icon">⚡</span>
+              <span class="pg-name">Groq</span>
+              <span class="pg-limit great">Eng ko'p bepul</span>
+            </div>
+            <ul class="pg-steps">
+              <li><a href="https://console.groq.com" target="_blank">console.groq.com</a> ga kiring</li>
+              <li>Google akkaunt bilan ro'yxatdan o'ting</li>
+              <li>API Keys → Create API Key</li>
+              <li>Kuniga 14,400 so'rov bepul · llama-3.3-70b modeli</li>
+            </ul>
+          </div>
+
+          <div class="provider-guide">
+            <div class="pg-header">
+              <span class="pg-icon">✦</span>
+              <span class="pg-name">Google Gemini</span>
+              <span class="pg-limit good">1500/kun bepul</span>
+            </div>
+            <ul class="pg-steps">
+              <li><a href="https://aistudio.google.com" target="_blank">aistudio.google.com</a> ga kiring</li>
+              <li>Google akkaunt bilan kiring</li>
+              <li>Yuqori o'ngda "Get API key" → "Create API key"</li>
+              <li>Kuniga 1,500 so'rov, oyiga 1,000,000 token bepul</li>
+            </ul>
+          </div>
+
+          <div class="provider-guide">
+            <div class="pg-header">
+              <span class="pg-icon">◆</span>
+              <span class="pg-name">Claude (Anthropic)</span>
+              <span class="pg-limit pay">To'lanadi, $5 dan</span>
+            </div>
+            <ul class="pg-steps">
+              <li><a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> ga kiring</li>
+              <li>Ro'yxatdan o'ting → Settings → API Keys</li>
+              <li>Billing ga $5 soling (eng kami)</li>
+              <li>Eng sifatli javoblar, lekin to'lanadi</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -284,268 +431,404 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ════════════════════════════════
+// ══════════════════════════════════
 //  CONFIG
-// ════════════════════════════════
-const GROQ_URL  = 'https://api.groq.com/openai/v1/chat/completions';
-const GROQ_MODEL = 'llama-3.3-70b-versatile';
-const CHAT_TTL  = 3 * 24 * 60 * 60 * 1000;
+// ══════════════════════════════════
+const PROVIDERS = {
+  groq: {
+    name: 'Groq',
+    call: callGroq
+  },
+  gemini: {
+    name: 'Gemini',
+    call: callGemini
+  },
+  claude: {
+    name: 'Claude',
+    call: callClaude
+  }
+};
 
-// ════════════════════════════════
-//  STATE
-// ════════════════════════════════
-let knowledge   = [];
-let messages    = [];
-let currentType = 'book';
-
+const CHAT_TTL = 3 * 24 * 60 * 60 * 1000;
 const TYPE_ICONS = {book:'📖',podcast:'🎙',video:'🎬',article:'📝',other:'📌'};
 const TYPE_NAMES = {book:'Kitob',podcast:'Podkast',video:'Video',article:'Maqola',other:'Boshqa'};
 
-// ════════════════════════════════
+// ══════════════════════════════════
+//  STATE
+// ══════════════════════════════════
+let knowledge    = [];
+let messages     = [];
+let currentType  = 'book';
+let activeProvider = 'groq';
+
+// ══════════════════════════════════
 //  PERSIST
-// ════════════════════════════════
-function saveKnowledge(){
-  try{localStorage.setItem('vena_kb',JSON.stringify(knowledge))}catch(e){}
-  updateKbBadge();
+// ══════════════════════════════════
+function saveKey(provider, val) {
+  clearTimeout(window['_kt_'+provider]);
+  window['_kt_'+provider] = setTimeout(() => {
+    if (val.trim()) localStorage.setItem('vena_key_'+provider, val.trim());
+    updateKeyStatus(provider);
+  }, 600);
 }
-function saveHistory(q,a){
-  try{
-    const raw=localStorage.getItem('vena_history');
-    const hist=raw?JSON.parse(raw):[];
-    hist.unshift({id:Date.now(),q,a,ts:Date.now()});
-    const pruned=hist.filter(h=>Date.now()-h.ts<CHAT_TTL).slice(0,200);
-    localStorage.setItem('vena_history',JSON.stringify(pruned));
-  }catch(e){}
-}
-function loadAll(){
-  try{
-    const kb=localStorage.getItem('vena_kb');
-    if(kb) knowledge=JSON.parse(kb);
-    const key=localStorage.getItem('vena_api');
-    if(key) document.getElementById('api-key').value=key;
-  }catch(e){}
+
+function loadAll() {
+  try {
+    const kb = localStorage.getItem('vena_kb');
+    if (kb) knowledge = JSON.parse(kb);
+
+    const prov = localStorage.getItem('vena_provider');
+    if (prov) { activeProvider = prov; selectProvider(prov, false); }
+
+    ['groq','gemini','claude'].forEach(p => {
+      const k = localStorage.getItem('vena_key_'+p);
+      if (k) {
+        document.getElementById('key-'+p+'-input').value = k;
+        updateKeyStatus(p);
+      }
+    });
+  } catch(e) {}
   renderKnowledge();
   renderHistory();
   updateKbBadge();
-}
-function updateKbBadge(){
-  const sources=[...new Set(knowledge.map(k=>k.source))];
-  document.getElementById('kb-badge').textContent=sources.length+' manba';
-}
-let apiTimer;
-function autoSaveApi(){
-  clearTimeout(apiTimer);
-  apiTimer=setTimeout(()=>{
-    const k=document.getElementById('api-key').value.trim();
-    if(k) localStorage.setItem('vena_api',k);
-  },700);
+  updateProviderPill();
 }
 
-// ════════════════════════════════
-//  KNOWLEDGE ACTIONS
-// ════════════════════════════════
-function setType(btn){
-  document.querySelectorAll('.src-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  currentType=btn.dataset.type;
+function saveKnowledge() {
+  try { localStorage.setItem('vena_kb', JSON.stringify(knowledge)); } catch(e) {}
+  updateKbBadge();
 }
 
-function addKnowledge(){
-  const title=document.getElementById('src-title').value.trim();
-  const text =document.getElementById('k-input').value.trim();
-  if(!text){showToast('⚠️ Matn bo\'sh');return;}
-  const source=title||TYPE_NAMES[currentType];
-  chunkText(text,2000).forEach(chunk=>{
-    knowledge.push({text:chunk,source,type:currentType});
+function saveHistory(q, a) {
+  try {
+    const raw  = localStorage.getItem('vena_history');
+    const hist = raw ? JSON.parse(raw) : [];
+    hist.unshift({ id: Date.now(), q, a, provider: activeProvider, ts: Date.now() });
+    localStorage.setItem('vena_history', JSON.stringify(
+      hist.filter(h => Date.now() - h.ts < CHAT_TTL).slice(0, 200)
+    ));
+  } catch(e) {}
+}
+
+function updateKbBadge() {
+  const sources = [...new Set(knowledge.map(k => k.source))];
+  document.getElementById('kb-badge').textContent = sources.length + ' manba';
+}
+
+function updateKeyStatus(p) {
+  const k   = localStorage.getItem('vena_key_'+p) || '';
+  const el  = document.getElementById('status-'+p);
+  if (!el) return;
+  el.textContent = k ? '● Kiritilgan' : '● Kiritilmagan';
+  el.className   = 'api-status ' + (k ? 'ok' : 'no');
+}
+
+function updateProviderPill() {
+  const pill = document.getElementById('provider-pill');
+  const icons = { groq:'⚡', gemini:'✦', claude:'◆' };
+  const names = { groq:'Groq', gemini:'Gemini', claude:'Claude' };
+  pill.textContent = icons[activeProvider] + ' ' + names[activeProvider];
+  pill.className   = 'provider-pill ' + activeProvider;
+}
+
+// ══════════════════════════════════
+//  PROVIDER SELECT
+// ══════════════════════════════════
+function selectProvider(p, saveToStorage = true) {
+  activeProvider = p;
+  if (saveToStorage) localStorage.setItem('vena_provider', p);
+
+  // highlight card
+  ['groq','gemini','claude'].forEach(id => {
+    const el = document.getElementById('pcard-'+id);
+    el.className = 'pcard ' + id + (id === p ? ' active' : '');
   });
-  document.getElementById('k-input').value='';
-  document.getElementById('src-title').value='';
+
+  // show key block
+  ['groq','gemini','claude'].forEach(id => {
+    document.getElementById('key-'+id).style.display = id === p ? 'block' : 'none';
+  });
+
+  updateProviderPill();
+}
+
+// ══════════════════════════════════
+//  API CALLS
+// ══════════════════════════════════
+function buildSystemPrompt() {
+  const relevant = knowledge.slice(0, 18);
+  const sources  = [...new Set(knowledge.map(k => k.source))].join(', ');
+  const ctx = relevant.map((k, i) =>
+    `[${i+1}] ${TYPE_ICONS[k.type]||''} ${k.source}\n${k.text}`
+  ).join('\n\n---\n\n');
+
+  return `Sen "Vena AI" — foydalanuvchining shaxsiy performance va o'sish bo'yicha AI assistentisan.
+
+Foydalanuvchi quyidagi manbalarni o'qitgan: ${sources}
+
+JAVOB USLUBI:
+- Bilimlar bazasidagi g'oyalarni o'z so'zlaring bilan, jonli va iliq tilda yoz
+- Xuddi aqlli do'sting maslahat berayotgandek — kitobdagi quruq iboralarda emas
+- Fikrlarni qisqa bo'laklarga bo'l
+- Kerak joyda **qalin** yoki *kursiv* ishlatib ajrat
+- Amaliy, konkret maslahatlar ber
+- O'zbek tilida yoz
+
+QOIDA: Faqat bilimlar bazasidagi ma'lumotlardan javob ber. Bazada yo'q bo'lsa: "Bu haqida bazamda ma'lumot yo'q" de.
+
+BILIMLAR BAZASI:
+${ctx}`;
+}
+
+async function callGroq(apiKey, systemPrompt) {
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+    body: JSON.stringify({
+      model: 'llama-3.3-70b-versatile',
+      max_tokens: 1200,
+      messages: [{ role: 'system', content: systemPrompt }, ...messages.slice(-14)]
+    })
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  return data.choices?.[0]?.message?.content || '';
+}
+
+async function callGemini(apiKey, systemPrompt) {
+  const contents = messages.slice(-14).map(m => ({
+    role: m.role === 'assistant' ? 'model' : 'user',
+    parts: [{ text: m.content }]
+  }));
+  const res = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system_instruction: { parts: [{ text: systemPrompt }] },
+        contents,
+        generationConfig: { maxOutputTokens: 1200 }
+      })
+    }
+  );
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+}
+
+async function callClaude(apiKey, systemPrompt) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01'
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1200,
+      system: systemPrompt,
+      messages: messages.slice(-14)
+    })
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  return data.content?.[0]?.text || '';
+}
+
+// ══════════════════════════════════
+//  KNOWLEDGE
+// ══════════════════════════════════
+function setType(btn) {
+  document.querySelectorAll('.src-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentType = btn.dataset.type;
+}
+
+function addKnowledge() {
+  const title = document.getElementById('src-title').value.trim();
+  const text  = document.getElementById('k-input').value.trim();
+  if (!text) { showToast('⚠️ Matn bo\'sh'); return; }
+  const source = title || TYPE_NAMES[currentType];
+  chunkText(text, 2000).forEach(chunk => knowledge.push({ text: chunk, source, type: currentType }));
+  document.getElementById('k-input').value = '';
+  document.getElementById('src-title').value = '';
   updateCount();
   saveKnowledge();
   renderKnowledge();
   showToast('✓ Qo\'shildi va saqlandi');
 }
 
-function removeSource(src){
-  if(!confirm('"'+src+'" manbani o\'chirasizmi?'))return;
-  knowledge=knowledge.filter(k=>k.source!==src);
-  saveKnowledge();
-  renderKnowledge();
-  showToast('🗑 '+src+' o\'chirildi');
+function removeSource(src) {
+  if (!confirm('"' + src + '" manbani o\'chirasizmi?')) return;
+  knowledge = knowledge.filter(k => k.source !== src);
+  saveKnowledge(); renderKnowledge();
+  showToast('🗑 ' + src + ' o\'chirildi');
 }
 
-function clearAllKnowledge(){
-  if(!knowledge.length)return;
-  if(!confirm('Barcha '+knowledge.length+' ta bo\'lakni o\'chirasizmi?'))return;
-  knowledge=[];
-  saveKnowledge();
-  renderKnowledge();
+function clearAllKnowledge() {
+  if (!knowledge.length) return;
+  if (!confirm('Barcha ' + knowledge.length + ' ta bo\'lakni o\'chirasizmi?')) return;
+  knowledge = []; saveKnowledge(); renderKnowledge();
   showToast('🗑 Bilimlar bazasi tozalandi');
 }
 
-// ════════════════════════════════
-//  FILE UPLOAD
-// ════════════════════════════════
-const dropZone=document.getElementById('drop-zone');
-dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('drag')});
-dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('drag'));
-dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.classList.remove('drag');handleFiles(e.dataTransfer.files)});
+const dropZone = document.getElementById('drop-zone');
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag'));
+dropZone.addEventListener('drop', e => { e.preventDefault(); dropZone.classList.remove('drag'); handleFiles(e.dataTransfer.files); });
 
-async function handleFiles(files){
-  const bar=document.getElementById('progress-bar');
-  const fill=document.getElementById('progress-fill');
-  const status=document.getElementById('upload-status');
-  bar.style.display='block';fill.style.width='0%';
-  let done=0,added=0;
-  for(const file of files){
-    status.textContent='"'+file.name+'" o\'qilmoqda...';
-    try{
-      const text=file.name.endsWith('.pdf')?await readPDF(file):await readAsText(file);
-      const source=file.name.replace(/\.[^.]+$/,'');
-      chunkText(text,2000).forEach(chunk=>{knowledge.push({text:chunk,source,type:currentType});added++;});
-    }catch(e){showToast('❌ '+file.name);}
+async function handleFiles(files) {
+  const bar = document.getElementById('progress-bar');
+  const fill = document.getElementById('progress-fill');
+  const status = document.getElementById('upload-status');
+  bar.style.display = 'block'; fill.style.width = '0%';
+  let done = 0, added = 0;
+  for (const file of files) {
+    status.textContent = '"' + file.name + '" o\'qilmoqda...';
+    try {
+      const text   = file.name.endsWith('.pdf') ? await readPDF(file) : await readAsText(file);
+      const source = file.name.replace(/\.[^.]+$/, '');
+      chunkText(text, 2000).forEach(chunk => { knowledge.push({ text: chunk, source, type: currentType }); added++; });
+    } catch(e) { showToast('❌ ' + file.name); }
     done++;
-    fill.style.width=Math.round(done/files.length*100)+'%';
+    fill.style.width = Math.round(done / files.length * 100) + '%';
   }
-  saveKnowledge();renderKnowledge();
-  status.textContent='✓ '+added+' ta bo\'lak qo\'shildi';
-  showToast('✓ '+added+' ta bo\'lak saqlandi');
-  setTimeout(()=>{bar.style.display='none';status.textContent=''},3000);
+  saveKnowledge(); renderKnowledge();
+  status.textContent = '✓ ' + added + ' ta bo\'lak qo\'shildi';
+  showToast('✓ ' + added + ' ta bo\'lak saqlandi');
+  setTimeout(() => { bar.style.display = 'none'; status.textContent = ''; }, 3000);
 }
 
-function readAsText(file){
-  return new Promise((res,rej)=>{
-    const r=new FileReader();
-    r.onload=e=>res(e.target.result);
-    r.onerror=()=>rej(new Error('O\'qib bo\'lmadi'));
-    r.readAsText(file,'UTF-8');
+function readAsText(file) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = e => res(e.target.result);
+    r.onerror = () => rej(new Error('O\'qib bo\'lmadi'));
+    r.readAsText(file, 'UTF-8');
   });
 }
-async function readPDF(file){
-  if(!window.pdfjsLib){
+async function readPDF(file) {
+  if (!window.pdfjsLib) {
     await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
-    window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
   }
-  const ab=await file.arrayBuffer();
-  const pdf=await window.pdfjsLib.getDocument({data:ab}).promise;
-  let text='';
-  for(let i=1;i<=pdf.numPages;i++){
-    const page=await pdf.getPage(i);
-    const c=await page.getTextContent();
-    text+=c.items.map(s=>s.str).join(' ')+'\n';
+  const ab  = await file.arrayBuffer();
+  const pdf = await window.pdfjsLib.getDocument({ data: ab }).promise;
+  let text  = '';
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const c    = await page.getTextContent();
+    text += c.items.map(s => s.str).join(' ') + '\n';
   }
   return text;
 }
-function loadScript(src){
-  return new Promise((res,rej)=>{
-    const s=document.createElement('script');
-    s.src=src;s.onload=res;s.onerror=()=>rej(new Error('Yuklanmadi'));
+function loadScript(src) {
+  return new Promise((res, rej) => {
+    const s = document.createElement('script');
+    s.src = src; s.onload = res; s.onerror = () => rej(new Error('Yuklanmadi'));
     document.head.appendChild(s);
   });
 }
-function chunkText(text,size){
-  const chunks=[];let i=0;
-  while(i<text.length){
-    let end=Math.min(i+size,text.length);
-    if(end<text.length){const d=text.lastIndexOf('.',end);if(d>i+size*.5)end=d+1;}
-    const chunk=text.slice(i,end).trim();
-    if(chunk.length>80)chunks.push(chunk);
-    i=end;
+function chunkText(text, size) {
+  const chunks = []; let i = 0;
+  while (i < text.length) {
+    let end = Math.min(i + size, text.length);
+    if (end < text.length) { const d = text.lastIndexOf('.', end); if (d > i + size * .5) end = d + 1; }
+    const chunk = text.slice(i, end).trim();
+    if (chunk.length > 80) chunks.push(chunk);
+    i = end;
   }
   return chunks;
 }
+function updateCount() {
+  document.getElementById('char-count').textContent = document.getElementById('k-input').value.length + ' belgi';
+}
 
-// ════════════════════════════════
-//  RENDER KNOWLEDGE
-// ════════════════════════════════
-function renderKnowledge(){
-  document.getElementById('k-count').textContent=knowledge.length;
-  const groups={};
-  knowledge.forEach((k,i)=>{
-    if(!groups[k.source])groups[k.source]={type:k.type,count:0,sample:k.text};
+function renderKnowledge() {
+  document.getElementById('k-count').textContent = knowledge.length;
+  const groups = {};
+  knowledge.forEach(k => {
+    if (!groups[k.source]) groups[k.source] = { type: k.type, count: 0, sample: k.text };
     groups[k.source].count++;
   });
-  const entries=Object.entries(groups);
-  const list=document.getElementById('k-list');
-  if(!entries.length){list.innerHTML='<div class="no-k">Hali hech narsa qo\'shilmagan</div>';return;}
-  list.innerHTML=entries.map(([src,g])=>`
+  const list = document.getElementById('k-list');
+  const entries = Object.entries(groups);
+  if (!entries.length) { list.innerHTML = '<div class="no-k">Hali hech narsa qo\'shilmagan</div>'; return; }
+  list.innerHTML = entries.map(([src, g]) => `
     <div class="k-item">
-      <div class="k-icon">${TYPE_ICONS[g.type]||'📌'}</div>
+      <div class="k-icon">${TYPE_ICONS[g.type] || '📌'}</div>
       <div class="k-info">
         <div class="k-meta">
           <span class="k-source">${esc(src)}</span>
-          <span class="k-type">${TYPE_NAMES[g.type]||'Boshqa'} · ${g.count} bo'lak</span>
+          <span class="k-type">${TYPE_NAMES[g.type] || 'Boshqa'} · ${g.count} bo'lak</span>
         </div>
         <div class="k-text">${esc(g.sample)}</div>
       </div>
-      <button class="k-del" onclick="removeSource(${JSON.stringify(src)})" title="O'chirish">×</button>
+      <button class="k-del" onclick="removeSource(${JSON.stringify(src)})">×</button>
     </div>`).join('');
 }
 
-function updateCount(){
-  document.getElementById('char-count').textContent=document.getElementById('k-input').value.length+' belgi';
-}
-
-// ════════════════════════════════
+// ══════════════════════════════════
 //  HISTORY
-// ════════════════════════════════
-function renderHistory(){
-  try{
-    const raw=localStorage.getItem('vena_history');
-    const hist=raw?JSON.parse(raw).filter(h=>Date.now()-h.ts<CHAT_TTL):[];
-    const list=document.getElementById('h-list');
-    if(!hist.length){list.innerHTML='<div class="no-h">Hali suhbat tarixi yo\'q</div>';return;}
-    list.innerHTML=hist.map(h=>`
+// ══════════════════════════════════
+function renderHistory() {
+  try {
+    const raw  = localStorage.getItem('vena_history');
+    const hist = raw ? JSON.parse(raw).filter(h => Date.now() - h.ts < CHAT_TTL) : [];
+    const list = document.getElementById('h-list');
+    if (!hist.length) { list.innerHTML = '<div class="no-h">Hali suhbat tarixi yo\'q</div>'; return; }
+    list.innerHTML = hist.map(h => `
       <div class="h-item" onclick="loadHistItem(${h.id})">
         <button class="h-del" onclick="event.stopPropagation();deleteHistItem(${h.id})">×</button>
         <div class="h-q">${esc(h.q)}</div>
-        <div class="h-a">${esc(h.a.slice(0,120))}...</div>
-        <div class="h-date">${timeAgo(h.ts)} · 3 kun saqlanadi</div>
+        <div class="h-a">${esc(h.a.slice(0, 120))}...</div>
+        <div class="h-meta">
+          <span class="h-date">${timeAgo(h.ts)} · 3 kun</span>
+          <span class="h-provider ${h.provider||'groq'}">${{groq:'⚡ Groq',gemini:'✦ Gemini',claude:'◆ Claude'}[h.provider]||'Groq'}</span>
+        </div>
       </div>`).join('');
-  }catch(e){}
+  } catch(e) {}
 }
 
-function loadHistItem(id){
-  try{
-    const raw=localStorage.getItem('vena_history');
-    const hist=raw?JSON.parse(raw):[];
-    const item=hist.find(h=>h.id===id);
-    if(!item)return;
+function loadHistItem(id) {
+  try {
+    const raw  = localStorage.getItem('vena_history');
+    const item = (raw ? JSON.parse(raw) : []).find(h => h.id === id);
+    if (!item) return;
     newChat(false);
-    addMsg('user',item.q);
-    addMsg('ai',item.a);
+    addMsg('user', item.q);
+    addMsg('ai', item.a);
     switchTab('chat');
-  }catch(e){}
+  } catch(e) {}
 }
 
-function deleteHistItem(id){
-  try{
-    const raw=localStorage.getItem('vena_history');
-    const hist=raw?JSON.parse(raw):[];
-    localStorage.setItem('vena_history',JSON.stringify(hist.filter(h=>h.id!==id)));
-    renderHistory();
-    showToast('🗑 O\'chirildi');
-  }catch(e){}
+function deleteHistItem(id) {
+  try {
+    const raw = localStorage.getItem('vena_history');
+    localStorage.setItem('vena_history', JSON.stringify((raw ? JSON.parse(raw) : []).filter(h => h.id !== id)));
+    renderHistory(); showToast('🗑 O\'chirildi');
+  } catch(e) {}
 }
 
-function clearAllHistory(){
-  if(!confirm('Barcha chat tarixini o\'chirasizmi?'))return;
+function clearAllHistory() {
+  if (!confirm('Barcha chat tarixini o\'chirasizmi?')) return;
   localStorage.removeItem('vena_history');
-  renderHistory();
-  showToast('🗑 Tarix tozalandi');
+  renderHistory(); showToast('🗑 Tarix tozalandi');
 }
 
-function timeAgo(ts){
-  const d=Date.now()-ts;
-  if(d<60000)return'Hozirgina';
-  if(d<3600000)return Math.floor(d/60000)+' daqiqa oldin';
-  if(d<86400000)return Math.floor(d/3600000)+' soat oldin';
-  return Math.floor(d/86400000)+' kun oldin';
+function timeAgo(ts) {
+  const d = Date.now() - ts;
+  if (d < 60000)    return 'Hozirgina';
+  if (d < 3600000)  return Math.floor(d / 60000) + ' daqiqa oldin';
+  if (d < 86400000) return Math.floor(d / 3600000) + ' soat oldin';
+  return Math.floor(d / 86400000) + ' kun oldin';
 }
 
-function newChat(switchToChat=true){
-  messages=[];
-  document.getElementById('messages').innerHTML=`
+function newChat(goToChat = true) {
+  messages = [];
+  document.getElementById('messages').innerHTML = `
     <div class="empty" id="empty-state">
       <div class="empty-logo">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
@@ -556,155 +839,106 @@ function newChat(switchToChat=true){
       <h3>Vena AI tayyor</h3>
       <p>Kitoblar, podkastlar va videolaringizdan o'rganib, sizga shaxsiy javob beradi.</p>
     </div>`;
-  if(switchToChat) switchTab('chat');
+  if (goToChat) switchTab('chat');
 }
 
-// ════════════════════════════════
+// ══════════════════════════════════
 //  CHAT
-// ════════════════════════════════
-function addMsg(role,text,typing=false){
+// ══════════════════════════════════
+function addMsg(role, text, typing = false) {
   document.getElementById('empty-state')?.remove();
-  const container=document.getElementById('messages');
-  const id='msg-'+Date.now()+'-'+Math.random().toString(36).slice(2);
-  const isUser=role==='user';
-  container.innerHTML+=`
+  const container = document.getElementById('messages');
+  const id = 'msg-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+  container.innerHTML += `
     <div class="msg ${role}" id="${id}">
-      <div class="msg-av">${isUser?'Sen':'V'}</div>
+      <div class="msg-av">${role === 'user' ? 'Sen' : 'V'}</div>
       <div class="bubble">${typing
-        ?'<div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div>'
-        :renderBubble(text)}</div>
+        ? '<div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div>'
+        : renderBubble(text)}</div>
     </div>`;
-  container.scrollTop=container.scrollHeight;
+  container.scrollTop = container.scrollHeight;
   return id;
 }
 
-function renderBubble(text){
+function renderBubble(text) {
   return esc(text)
-    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g,'<em>$1</em>')
-    .replace(/\n\n/g,'<br><br>')
-    .replace(/\n/g,'<br>');
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>');
 }
-
-function updateMsg(id,text){
-  const el=document.getElementById(id);
-  if(el) el.querySelector('.bubble').innerHTML=renderBubble(text);
-  document.getElementById('messages').scrollTop=99999;
+function updateMsg(id, text) {
+  const el = document.getElementById(id);
+  if (el) el.querySelector('.bubble').innerHTML = renderBubble(text);
+  document.getElementById('messages').scrollTop = 99999;
 }
-
-function askSug(btn){
-  document.getElementById('chat-input').value=btn.textContent;
+function askSug(btn) {
+  document.getElementById('chat-input').value = btn.textContent;
   sendMessage();
 }
 
-async function sendMessage(){
-  const input=document.getElementById('chat-input');
-  const btn=document.getElementById('send-btn');
-  const q=input.value.trim();
-  if(!q||btn.disabled)return;
+async function sendMessage() {
+  const input = document.getElementById('chat-input');
+  const btn   = document.getElementById('send-btn');
+  const q     = input.value.trim();
+  if (!q || btn.disabled) return;
 
-  const warn=document.getElementById('warn');
-  if(!knowledge.length){
-    warn.style.display='block';
+  const warn = document.getElementById('warn');
+  if (!knowledge.length) {
+    warn.style.display = 'block';
     switchTab('knowledge');
-    setTimeout(()=>warn.style.display='none',3000);
+    setTimeout(() => warn.style.display = 'none', 3000);
     return;
   }
 
-  const apiKey=document.getElementById('api-key').value.trim();
-  if(!apiKey){
-    showToast('⚠️ Avval Groq API kalitini kiriting');
-    switchTab('knowledge');
+  const apiKey = localStorage.getItem('vena_key_' + activeProvider) || '';
+  if (!apiKey) {
+    showToast('⚠️ Avval "Sozlamalar" da API kalitini kiriting');
+    switchTab('settings');
     return;
   }
 
   switchTab('chat');
-  input.value='';
-  btn.disabled=true;
-  addMsg('user',q);
-  messages.push({role:'user',content:q});
-  const typingId=addMsg('ai','',true);
+  input.value = '';
+  btn.disabled = true;
+  addMsg('user', q);
+  messages.push({ role: 'user', content: q });
+  const typingId = addMsg('ai', '', true);
 
-  // Build context
-  const relevant=knowledge.slice(0,18);
-  const sources=[...new Set(knowledge.map(k=>k.source))].join(', ');
-  const ctx=relevant.map((k,i)=>
-    `[${i+1}] ${TYPE_ICONS[k.type]||''} ${k.source}\n${k.text}`
-  ).join('\n\n---\n\n');
-
-  const systemPrompt=`Sen "Vena AI" — foydalanuvchining shaxsiy performance va o'sish bo'yicha AI assistentisan.
-
-Foydalanuvchi quyidagi manbalarni o'qitgan: ${sources}
-
-JAVOB YOZISH USLUBI:
-- Bilimlar bazasidan olingan g'oyalarni o'z so'zlaring bilan, jonli va iliq tilda yoz
-- Xuddi aqlli do'sting maslahat berayotgandek — kitobdagi quruq iboralarda emas
-- Fikrlarni qisqa bo'laklarga bo'l, o'qish oson bo'lsin
-- Kerak joyda **qalin** yoki *kursiv* ishlatib ajrat
-- Amaliy, konkret maslahatlar ber — "bu murakkab" deb chetlab ketma
-- O'zbek tilida yoz, professional lekin iliq ohangda
-
-QOIDALAR:
-- Faqat bilimlar bazasidagi ma'lumotlardan kelib chiqqan holda javob ber
-- Agar bazada mos ma'lumot yo'q bo'lsa: "Bu haqida bazamda ma'lumot yo'q" de
-- Javob uzunligi: savolga mos — qisqa savol = qisqa javob, chuqur savol = batafsil javob
-
-BILIMLAR BAZASI:
-${ctx}`;
-
-  try{
-    const res=await fetch(GROQ_URL,{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'Authorization':'Bearer '+apiKey
-      },
-      body:JSON.stringify({
-        model:GROQ_MODEL,
-        max_tokens:1200,
-        messages:[
-          {role:'system',content:systemPrompt},
-          ...messages.slice(-14)
-        ]
-      })
-    });
-    const data=await res.json();
-    if(data.error){
-      updateMsg(typingId,'❌ Xatolik: '+data.error.message);
-    } else {
-      const reply=data.choices?.[0]?.message?.content||'Javob olishda xatolik.';
-      messages.push({role:'assistant',content:reply});
-      updateMsg(typingId,reply);
-      saveHistory(q,reply);
-      renderHistory();
-    }
-  }catch(e){
-    updateMsg(typingId,'❌ Ulanish xatosi. API kalitini tekshiring.');
+  try {
+    const systemPrompt = buildSystemPrompt();
+    const reply = await PROVIDERS[activeProvider].call(apiKey, systemPrompt);
+    messages.push({ role: 'assistant', content: reply });
+    updateMsg(typingId, reply);
+    saveHistory(q, reply);
+    renderHistory();
+  } catch(e) {
+    updateMsg(typingId, '❌ Xatolik: ' + e.message + '\n\nSozlamalar da API kalitini tekshiring.');
   }
 
-  btn.disabled=false;
+  btn.disabled = false;
   input.focus();
 }
 
-// ════════════════════════════════
+// ══════════════════════════════════
 //  HELPERS
-// ════════════════════════════════
-function esc(t){
-  return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+// ══════════════════════════════════
+function esc(t) {
+  return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
-function switchTab(tab){
-  document.querySelectorAll('.tab').forEach((t,i)=>
-    t.classList.toggle('active',['chat','knowledge','history'][i]===tab));
-  ['chat','knowledge','history'].forEach(id=>
-    document.getElementById('tab-'+id).classList.toggle('active',id===tab));
-  if(tab==='history') renderHistory();
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t, i) =>
+    t.classList.toggle('active', ['chat','knowledge','history','settings'][i] === tab));
+  ['chat','knowledge','history','settings'].forEach(id =>
+    document.getElementById('tab-' + id).classList.toggle('active', id === tab));
+  if (tab === 'history') renderHistory();
 }
 let toastTimer;
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>t.classList.remove('show'),2500);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
 }
 
 loadAll();
