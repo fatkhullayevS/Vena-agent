@@ -562,19 +562,28 @@ function buildSystemPrompt() {
     `[${i+1}] ${TYPE_ICONS[k.type]||''} ${k.source}\n${k.text}`
   ).join('\n\n---\n\n');
 
-  return `Sen "Vena AI" — foydalanuvchining shaxsiy performance va o'sish bo'yicha AI assistentisan.
+  return `Sen "Vena AI" — performance marketing va biznes o'sishi bo'yicha mutaxassis AI assistentsan.
 
-Foydalanuvchi quyidagi manbalarni o'qitgan: ${sources}
+Foydalanuvchi o'qitgan manbalar: ${sources}
 
-JAVOB USLUBI:
-- Bilimlar bazasidagi g'oyalarni o'z so'zlaring bilan, jonli va iliq tilda yoz
-- Xuddi aqlli do'sting maslahat berayotgandek — kitobdagi quruq iboralarda emas
-- Fikrlarni qisqa bo'laklarga bo'l
-- Kerak joyda **qalin** yoki *kursiv* ishlatib ajrat
-- Amaliy, konkret maslahatlar ber
-- O'zbek tilida yoz
+MUTAXASSISLIK SOHALARING:
+- Performance marketing (Meta Ads, Google Ads, TikTok Ads)
+- Offer yaratish va narx belgilash strategiyasi
+- Lead generation va funnel qurilishi
+- Konversiya optimallashtirish (CRO)
+- Biznes o'sishi va scaling
+- Sotish psixologiyasi va copywriting
+- ROI, ROAS, CAC, LTV kabi metrikalar tahlili
 
-QOIDA: Faqat bilimlar bazasidagi ma'lumotlardan javob ber. Bazada yo'q bo'lsa: "Bu haqida bazamda ma'lumot yo'q" de.
+JAVOB QOIDALARI:
+1. FAQAT performance marketing va biznes o'sishi mavzularida javob ber
+2. Agar savol bu mavzulardan tashqari bo'lsa — "Men faqat performance marketing va biznes o'sishi bo'yicha yordam bera olaman" de
+3. Bilimlar bazasidagi g'oyalarni O'Z SO'ZLARING bilan yoz — kitobdagi quruq jumlalarni ko'chirma
+4. Javobni TO'LIQ yoz — o'rtada to'xtatma, har bir fikrni oxirigacha tushuntir
+5. Strukturali yoz: kirish → asosiy fikrlar → amaliy qadamlar → xulosa
+6. **Qalin** va *kursiv* ishlatib muhim joylarni ajrat
+7. Konkret raqamlar, real misollar va amaliy qadamlar ber
+8. O'zbek tilida, professional lekin iliq ohangda yoz
 
 BILIMLAR BAZASI:
 ${ctx}`;
@@ -586,7 +595,7 @@ async function callGroq(apiKey, systemPrompt) {
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
     body: JSON.stringify({
       model: 'llama-3.3-70b-versatile',
-      max_tokens: 1200,
+      max_tokens: 3000,
       messages: [{ role: 'system', content: systemPrompt }, ...messages.slice(-14)]
     })
   });
@@ -612,7 +621,7 @@ async function callGemini(apiKey, systemPrompt) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         contents,
-        generationConfig: { maxOutputTokens: 1200, temperature: 0.7 }
+        generationConfig: { maxOutputTokens: 3000, temperature: 0.7 }
       })
     }
   );
@@ -631,7 +640,7 @@ async function callClaude(apiKey, systemPrompt) {
     },
     body: JSON.stringify({
       model: 'claude-sonnet-4-20250514',
-      max_tokens: 1200,
+      max_tokens: 3000,
       system: systemPrompt,
       messages: messages.slice(-14)
     })
