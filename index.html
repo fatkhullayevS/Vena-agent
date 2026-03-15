@@ -557,69 +557,89 @@ function selectProvider(p, saveToStorage = true) {
 // ══════════════════════════════════
 //  API CALLS
 // ══════════════════════════════════
-function buildSystemPrompt() {
+function buildSystemPrompt(query) {
   const sources = [...new Set(knowledge.map(k => k.source))].join(', ');
 
-  // Smart selection: distribute chunks evenly across ALL sources
-  // so no single source dominates
+  // Simple keyword-based relevance scoring
+  // Score each chunk by how many query words it contains
+  const queryWords = query.toLowerCase()
+    .replace(/[^a-z0-9\s]/gi, ' ')
+    .split(/\s+/)
+    .filter(w => w.length > 2);
+
+  const scored = knowledge.map(k => {
+    const text = (k.text + ' ' + k.source).toLowerCase();
+    let score = 0;
+    queryWords.forEach(word => {
+      // Exact word match = 3 points, partial = 1 point
+      const regex = new RegExp('\\b' + word + '\\b', 'gi');
+      const exact = (text.match(regex) || []).length;
+      const partial = (text.includes(word) ? 1 : 0);
+      score += exact * 3 + partial;
+    });
+    return { ...k, score };
+  });
+
+  // Sort by relevance, take top 30 most relevant chunks
+  const relevant = scored
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 30);
+
+  // Always include at least 2 chunks from each source (diversity)
   const bySource = {};
   knowledge.forEach(k => {
     if (!bySource[k.source]) bySource[k.source] = [];
     bySource[k.source].push(k);
   });
-
-  // Take chunks from each source evenly, up to ~40 total chunks
-  const MAX_CHUNKS = 40;
-  const sourceList = Object.entries(bySource);
-  const perSource = Math.max(1, Math.floor(MAX_CHUNKS / sourceList.length));
-  let relevant = [];
-  sourceList.forEach(([src, chunks]) => {
-    relevant = relevant.concat(chunks.slice(0, perSource));
+  Object.entries(bySource).forEach(([src, chunks]) => {
+    const alreadyIn = relevant.filter(r => r.source === src).length;
+    if (alreadyIn < 2 && relevant.length < 35) {
+      chunks.slice(0, 2 - alreadyIn).forEach(c => {
+        if (!relevant.find(r => r.text === c.text)) relevant.push(c);
+      });
+    }
   });
-  // If still under limit, fill remaining slots
-  if (relevant.length < MAX_CHUNKS) {
-    sourceList.forEach(([src, chunks]) => {
-      const already = relevant.filter(k => k.source === src).length;
-      const extra = chunks.slice(already, already + 3);
-      extra.forEach(k => { if (relevant.length < MAX_CHUNKS) relevant.push(k); });
-    });
-  }
 
   const ctx = relevant.map((k, i) =>
     `[${i+1}] ${TYPE_ICONS[k.type]||''} ${k.source}\n${k.text}`
   ).join('\n\n---\n\n');
 
+  const totalChunks = knowledge.length;
+  const totalSources = Object.keys(bySource).length;
+
   return `Sen "Vena AI" — foydalanuvchining shaxsiy bilimlar bazasiga asoslangan AI assistentsan.
 
-Foydalanuvchi o'qitgan manbalar: ${sources}
+Barcha manbalar: ${sources}
+Jami baza: ${totalChunks} ta bo'lak, ${totalSources} ta manba
+Hozir ko'rsatilayotgan: ${relevant.length} ta eng mos bo'lak (savolga relevantligi bo'yicha tanlab olindi)
 
 QATTIQ QOIDALAR:
 1. FAQAT yuqoridagi BILIMLAR BAZASIDAN foydalanib javob ber
 2. Internet yoki o'z ichingdagi umumiy bilimlardan FOYDALANMA
-3. Savolni tahlil qil va BARCHA manbalardagi mos ma'lumotlarni birlashtir
-4. Bitta manbaga tayanma — har bir manbadan tegishli fikrlarni ol
-5. Agar savol bazada umuman yo'q bo'lsa: "Bu mavzu haqida bazamda yetarli ma'lumot yo'q" de
+3. Berilgan savolni diqqat bilan tahlil qil
+4. Faqat savolga bevosita aloqador ma'lumotlarni ishlatib javob ber
+5. Bazada yo'q bo'lsa: "Bu mavzu haqida bazamda yetarli ma'lumot yo'q" de
 
-JAVOB FORMATI (har doim shu tartibda):
+JAVOB FORMATI:
 
 **Bazadan:**
-Barcha manbalardan olingan ma'lumotlarni birlashtirgan holda strukturali javob:
+Savolga mos ma'lumotlarni birlashtirgan holda strukturali javob:
 - Kirish (1-2 jumla)
-- Asosiy fikrlar (raqamlangan, turli manbalardan sintezlangan)
+- Asosiy fikrlar (raqamlangan)
 - Amaliy qadamlar
 - Xulosa
 
 ---
-*Vena fikri:* Bazadagi ma'lumotlarga qo'shimcha ravishda, shaxsan men shuni ham qo'shgan bo'lardim: [2-3 jumlada o'z fikring]
+*Vena fikri:* [2-3 jumlada o'z qisqa fikring]
 
 USLUB:
-- O'z so'zlaring bilan yoz, kitobdagi quruq jumlalarni ko'chirma
+- O'z so'zlaring bilan yoz
 - **Qalin** va *kursiv* ishlatib ajrat
 - Konkret raqamlar va misollar ber
-- Javobni TO'LIQ yoz, o'rtada to'xtatma
+- Javobni TO'LIQ yoz
 - O'zbek tilida, professional lekin iliq ohangda
 
-BILIMLAR BAZASI (${relevant.length} ta bo'lak, ${sourceList.length} ta manba):
+BILIMLAR BAZASI:
 ${ctx}`;
 }
 
@@ -973,7 +993,7 @@ async function sendMessage() {
   const typingId = addMsg('ai', '', true);
 
   try {
-    const systemPrompt = buildSystemPrompt();
+    const systemPrompt = buildSystemPrompt(q);
     const reply = await PROVIDERS[activeProvider].call(apiKey, systemPrompt);
     messages.push({ role: 'assistant', content: reply });
     updateMsg(typingId, reply);
