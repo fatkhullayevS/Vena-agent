@@ -558,8 +558,33 @@ function selectProvider(p, saveToStorage = true) {
 //  API CALLS
 // ══════════════════════════════════
 function buildSystemPrompt() {
-  const relevant = knowledge.slice(0, 18);
-  const sources  = [...new Set(knowledge.map(k => k.source))].join(', ');
+  const sources = [...new Set(knowledge.map(k => k.source))].join(', ');
+
+  // Smart selection: distribute chunks evenly across ALL sources
+  // so no single source dominates
+  const bySource = {};
+  knowledge.forEach(k => {
+    if (!bySource[k.source]) bySource[k.source] = [];
+    bySource[k.source].push(k);
+  });
+
+  // Take chunks from each source evenly, up to ~40 total chunks
+  const MAX_CHUNKS = 40;
+  const sourceList = Object.entries(bySource);
+  const perSource = Math.max(1, Math.floor(MAX_CHUNKS / sourceList.length));
+  let relevant = [];
+  sourceList.forEach(([src, chunks]) => {
+    relevant = relevant.concat(chunks.slice(0, perSource));
+  });
+  // If still under limit, fill remaining slots
+  if (relevant.length < MAX_CHUNKS) {
+    sourceList.forEach(([src, chunks]) => {
+      const already = relevant.filter(k => k.source === src).length;
+      const extra = chunks.slice(already, already + 3);
+      extra.forEach(k => { if (relevant.length < MAX_CHUNKS) relevant.push(k); });
+    });
+  }
+
   const ctx = relevant.map((k, i) =>
     `[${i+1}] ${TYPE_ICONS[k.type]||''} ${k.source}\n${k.text}`
   ).join('\n\n---\n\n');
@@ -571,16 +596,16 @@ Foydalanuvchi o'qitgan manbalar: ${sources}
 QATTIQ QOIDALAR:
 1. FAQAT yuqoridagi BILIMLAR BAZASIDAN foydalanib javob ber
 2. Internet yoki o'z ichingdagi umumiy bilimlardan FOYDALANMA
-3. Savolni tahlil qil va bazadagi eng mos ma'lumotni top
-4. Agar savol bazada umuman yo'q bo'lsa: "Bu mavzu haqida bazamda yetarli ma'lumot yo'q" de
-5. Bazada qisman ma'lumot bo'lsa — shu qismni ishlatib, eng yaxshi javobni ber
+3. Savolni tahlil qil va BARCHA manbalardagi mos ma'lumotlarni birlashtir
+4. Bitta manbaga tayanma — har bir manbadan tegishli fikrlarni ol
+5. Agar savol bazada umuman yo'q bo'lsa: "Bu mavzu haqida bazamda yetarli ma'lumot yo'q" de
 
 JAVOB FORMATI (har doim shu tartibda):
 
 **Bazadan:**
-Bilimlar bazasidagi ma'lumotlar asosida strukturali javob:
+Barcha manbalardan olingan ma'lumotlarni birlashtirgan holda strukturali javob:
 - Kirish (1-2 jumla)
-- Asosiy fikrlar (raqamlangan yoki bo'limlarga ajratilgan)
+- Asosiy fikrlar (raqamlangan, turli manbalardan sintezlangan)
 - Amaliy qadamlar
 - Xulosa
 
@@ -594,7 +619,7 @@ USLUB:
 - Javobni TO'LIQ yoz, o'rtada to'xtatma
 - O'zbek tilida, professional lekin iliq ohangda
 
-BILIMLAR BAZASI:
+BILIMLAR BAZASI (${relevant.length} ta bo'lak, ${sourceList.length} ta manba):
 ${ctx}`;
 }
 
